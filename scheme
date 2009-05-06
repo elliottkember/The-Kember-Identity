@@ -1,0 +1,31 @@
+; Kember Identity finder in Scheme
+; Thanks to Fabien Delorme
+
+#lang scheme
+(require (planet soegaard/digest:1:2/digest))
+
+(define alphabet #"abcdef1234567890")
+(define alphabet-length (bytes-length alphabet))
+(define length 31)
+
+(define (random-byte)
+ (bytes-ref alphabet (random alphabet-length)))
+
+(define bytes (make-bytes length (random-byte)))
+
+(define (change-one-byte!)
+ (bytes-set! bytes (random length) (random-byte)))
+
+(define (random-loop n)
+ (if (= n 0)
+     #f
+     (let ((context (make-digest-context 'md5)))
+       (init-context context)
+       (change-one-byte!)
+       (update-context context bytes)
+       (if (equal? (final-context->hex-string context)
+(bytes->string/utf-8 bytes))
+           bytes
+           (random-loop (- n 1))))))
+
+(random-loop 100000)    

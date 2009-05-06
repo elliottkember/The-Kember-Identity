@@ -1,0 +1,39 @@
+// Kember Identity Finder in Groovy
+// by Barney Boisvert
+
+import java.security.MessageDigest
+
+digest = MessageDigest.getInstance("MD5")
+
+String md5(String s) {
+     digest.reset()
+     digest.update(s.getBytes())
+     byte[] md5 = digest.digest()
+     StringBuilder sb = new StringBuilder()
+     for (byte i : md5) {
+             sb.append(Integer.toHexString(0xff & i))
+     }
+     return sb.toString()
+}
+
+start = System.currentTimeMillis()
+random = new Random();
+digits = "0123456789ABCDEF"
+char[] chars = new char[32];
+for (iterations = 1; true; iterations++) {
+     for (int i = 0; i < chars.length; i++) {
+             chars[i] = digits.charAt(random.nextInt(digits.length()))
+     }
+     s = new String(chars);
+     if (s == md5(s)) {
+             println()
+             println("we found it on attempt $iterations!")
+             println("$s hashes to itself!")
+             break
+     }
+     if (iterations % 10000 == 0) {
+             println("Still looking after $iterations attempts (in
+${(System.currentTimeMillis() - start) / 1000} sec). This one was
+'$s'.")
+     }
+}
