@@ -1,8 +1,9 @@
 # Kember Identity Finder
 # Origin unknown
+# Soon to be replaced - very, very buggy. Whoever wrote this fails.
 
 import random
-alphabet = 'abcdefghijklmnopqrstuvwxyz'
+alphabet = 'abcdefghijklmnopqrstuvwxyz1234'
 min = 5
 max = 15
 total = 1000000
