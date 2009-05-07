@@ -1,0 +1,41 @@
+<!---
+	Page:		getKemberIdentity.cfm
+	Author:		Stephen J. Withington, Jr. (stephenwithington.com)
+	Version:	20090501.00
+	Purpose:	Challenge to find a string that when hashed, will return itself.
+				See http://www.elliottkember.com/kember_identity.html for more information.
+--->
+
+<cffunction name="getKemberIdentity" access="public" output="false" returntype="string"
+			hint="I try to find a string that when hashed, will return itself.">
+	<cfargument name="timesToTry" type="numeric" required="true" /> 
+	<cfset var kemberResult = "" />
+	<cfset var theRandomString = "" />
+	<cfset var theHashedString = "" />
+	<cfset var theIndex = "" />
+	<cfloop index="theIndex" from="1" to="#val(arguments.timesToTry)#" step="1">
+		<cfset theRandomString = RandomizeString() />	
+		<cfset theHashedString = hash(theRandomString, "MD5", "UTF-8") />
+		<cfif theHashedString eq theRandomString>
+			<cfset kemberResult = "We found a winner: #theRandomString# = #theHashedString# = JACKPOT!!!!" />
+			<cfreturn kemberResult />
+		<cfelseif theIndex eq timesToTry>
+			<cfset kemberResult = "." />
+		</cfif>
+	</cfloop>
+	<cfreturn kemberResult />
+</cffunction>
+
+<cffunction name="RandomizeString" access="public" output="false" returntype="string"
+			hint="pass me a string and desired length and I'll randomize it for you.">
+	<cfargument name="theString" type="string" required="false" default="0123456789ABCDEF" />
+	<cfargument name="theLength" type="numeric" required="false" default="32" />
+	<cfset var randomizedString = "" />
+	<cfset var theIndex = "" />
+	<cfloop index="theIndex" from="1" to="#val(arguments.theLength)#" step="1">
+		<cfset randomizedString = randomizedString & mid(arguments.theString, rand()*len(arguments.theString)+1, 1) />
+	</cfloop>
+	<cfreturn randomizedString />
+</cffunction>
+
+<cfoutput>#getKemberIdentity(100000)#</cfoutput>        
