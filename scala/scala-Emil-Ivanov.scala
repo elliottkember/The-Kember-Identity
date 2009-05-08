@@ -1,9 +1,8 @@
-mport scala.util.Random
-import scala.collection.mutable
+import scala.util.Random
 import java.security.MessageDigest
+import java.math.BigInteger
 
 object Kih {
-  val alphabet = List('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
   val md = MessageDigest.getInstance("MD5")
 
   def main(args: Array[String]) {
@@ -12,26 +11,28 @@ object Kih {
   }
 
   def find(): String = {
-    var original: Array[Byte] = randomBytes
+    var original = randomBytes
     while (original != hash(original)) {
       original = randomBytes
     }
-    original.map(_.toChar).mkString
+
+    bytesAsString(original)
   }
 
   def hash(original: Array[Byte]): Array[Byte] = {
+    md.reset()
     md.update(original)
     md.digest
   }
 
-  def randomBytes = {
+  def randomBytes(): Array[Byte] = {
     val rand = new Random
-    val newHash = new mutable.ArrayBuffer[Byte]
+    val newHash = new Array[Byte](16)
 
-    for (i <- 1 to 32) {
-      newHash += alphabet(rand nextInt alphabet.length).toByte
-    }
+    rand.nextBytes(newHash)
 
-    newHash toArray
+    newHash
   }
+
+  def bytesAsString(bytes: Array[Byte]): String = new BigInteger(1, bytes).toString(16)
 }
