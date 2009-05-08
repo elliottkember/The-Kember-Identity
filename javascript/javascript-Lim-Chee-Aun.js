@@ -16,7 +16,7 @@ var kemberIdentity = function(kemberEl){
 	var interval = setInterval(function(){
 		var str = randomGenerate(32);
 		i++;
-		if (i == 10000){
+		if (i == 1000){
 			kemberDiv.innerHTML += str + '<br>';
 			i = 0;
 		}
