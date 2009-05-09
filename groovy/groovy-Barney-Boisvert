@@ -9,16 +9,16 @@ String md5(String s) {
      digest.reset()
      digest.update(s.getBytes())
      byte[] md5 = digest.digest()
-     StringBuilder sb = new StringBuilder()
-     for (byte i : md5) {
-             sb.append(Integer.toHexString(0xff & i))
+     s = new BigInteger(1, digest.digest()).toString(16)
+     while (s.length() < 32) {
+          s = "0" + s
      }
-     return sb.toString()
+     return s
 }
 
 start = System.currentTimeMillis()
 random = new Random();
-digits = "0123456789ABCDEF"
+digits = "0123456789abcdef"
 char[] chars = new char[32];
 for (iterations = 1; true; iterations++) {
      for (int i = 0; i < chars.length; i++) {
