@@ -1,0 +1,72 @@
+# This is a SuperMongo macro file. To run these macros make sure you have
+# majurics smtools installed.
+#
+# Call the macro 'benchmark' for automated benchmarking. The resulting
+# figures will be stored in figs/ directory, with the datafiles in the data/
+# directory.
+#
+
+rr
+	re macros.sm
+
+benchmark
+	! (cd .. && make)
+	! mkdir -p figs data
+	init
+	benchcalc
+	benchsearch
+	mkfigs
+
+init
+	! ./getdevname.sh > deviceid.txt
+	data deviceid.txt
+	read '%s %s %30s' <devnameu host devname>
+	define GPU  (devname[0])
+	define GPUU (devnameu[0])
+	define HOST (host[0])
+	! rm -f deviceid.txt
+
+benchcalc
+	! cat ../wordlist.txt | ../cuda_md5 --benchmark | sed -r 's/ *[^ ]+=/\t/g' > data/bench.$HOST.calc.dat
+
+benchsearch
+	! cat ../wordlist.txt | ../cuda_md5 --benchmark --search=AliceBob | sed -r 's/ *[^ ]+=/\t/g' > data/bench.$HOST.search.dat
+
+tpbplot 1
+	# Plot of computation speed vs. number of threads per block
+	# See README for instructions on how to produce bench.dat
+	#
+	data "data/bench.$!HOST.$!1.dat"
+	read <tpb 2 nblocks 4 padding 7 dynmem 8 shmem 9 t 10 v 11>
+	set bpmp = int(2**14 / shmem)
+
+	lweight 3
+	expand 1.0001
+	limits tpb v
+	erase box 4 2 0 4
+	connect tpb v
+
+	limits tpb 0 10
+	box 1 0 0 2
+	connect tpb bpmp
+
+	ltype 1	
+	do i=0,256,32 { vline $i\n }
+	ltype 0
+
+	xlabel Threads per block
+	ylabel \raise500MD5 hashes/second
+	relocate $fx2 $(0.5*($fy2+$fy1))
+	angle 90
+	putlabel 2 \raise-1500Blocks per multiprocessor
+	angle 0
+
+	xuplabel "$!HOST : $!GPU ($!1)"
+	lweight 1
+
+mkfigs
+	psfile figs/perf_vs_tpb.$GPUU.$HOST.calc.ps tpbplot calc
+	psfile figs/perf_vs_tpb.$GPUU.$HOST.search.ps tpbplot search
+
+	! convert figs/perf_vs_tpb.$GPUU.$HOST.calc.ps figs/perf_vs_tpb.$GPUU.$HOST.calc.png
+	! convert figs/perf_vs_tpb.$GPUU.$HOST.search.ps figs/perf_vs_tpb.$GPUU.$HOST.search.png
