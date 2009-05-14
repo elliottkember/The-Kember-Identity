@@ -1,0 +1,158 @@
+Version 0.4.0
+April 29 2009
+================================================================
+
+* Additions to core:
+    * Custom DOM events. DomCollection#on() treats event names
+      containing colons as custom events, and a fire() method
+      is provided for notifying observers.
+
+* Bug fixes:
+    * DomCollection#set() handles boolean attributes correctly
+    * '+' symbols in URLs are now parsed as spaces by Ojay.HTTP
+
+* New packages: Tabs
+
+* Additions to Forms package:
+    * New method: Ojay.Forms.submit(form) acts as a replacement
+      for Form#submit() that respects validation and Ajax rules.
+
+* Additions to HTTP package:
+    * Raw strings can be used as the body for POST requests, e.g.
+      Ojay.HTTP.POST('/endpoint', 'request body', { /* callbacks */ })
+
+* Additions to Paginator package:
+    * New methods: push(), pop(), shift() and unshift() for
+      adding and removing items from Paginators
+
+
+Version 0.3.1
+December 1 2008
+================================================================
+
+* Bug fixes:
+    * Fixed some layout-related problems with Accordion in
+      Internet Explorer.
+    * Added ability to pass options to Forms constructors, with
+      an option to set the position type used to wrap form
+      inputs (wrapperPosition). See Forms documentation for
+      more information.
+
+
+Version 0.3.0
+October 31 2008
+================================================================
+
+* JS.Class updated to 2.0.2. This does not affect the Ojay API
+  but will affect you if you use JS.Class explicitly yourself.
+  See http://jsclass.jcoglan.com/upgrade.html
+
+* New packages: Accordion
+
+* Additions to core:
+    * Observable now causes and event to bubble up the inheritance
+      tree of the object that fired it. So you can listen to all
+      instances of Paginator using Ojay.Paginator.on()
+    * Multiple CSS selector engines are now supported, and new ones
+      can be added fairly easily. Supports W3C API, YUI, Ext,
+      Sizzle and Peppy out of the box.
+    * New method for animated scrolling: DomCollection#scroll().
+
+* Additions to Forms package:
+    * Ojay.Forms.setValue() now selects options in drop-down
+      menus based on text content, not just values
+
+* Additions to HTTP package:
+    * onSuccess callbacks can now be specified implicitly, like
+      they are in jQuery. If you supply a single function (rather
+      than a named list), that function is taken to be onSuccess.
+      e.g.
+          
+          Ojay.HTTP.GET('/search', {q: 'hello'}, function(r) { ... });
+      
+    * Better JSON-P support for calling third-party domains. You
+      can now use standard Ajax syntax rather than using a named
+      global function for talking to JSON-P services.
+
+* Additions to Overlay package:
+    * ContentOverlay#fitToContent() can now animate the transition
+      between sizes, and balance the change so the center of the
+      overlay does not move.
+
+* Additions to Paginator package:
+    * Paginator now supports two additional options: 'looped' and
+      'infinite'. Looped mode allows the prev/next buttons to wrap
+      around the loop of pages, and infinite mode allows the paginator
+      to keep scrolling indefinitely in the same direction.
+
+* Bug fixes:
+    * Ojay.HTML.input() generates inputs with the correct type in IE
+    * DomCollection#setAttributes() was failing on attrs that required
+      use of HTMLElement#setAttribute. This is now fixed.
+
+* Deprecations:
+    * HTTP.Response#evalScriptTags() has been removed. Use
+      HTTP.Response#evalScripts().
+    * DomCollection#setAttributes() has been deprecated in favour of
+      the shorter DomCollection#set()
+
+
+Version 0.2.1
+August 6 2008
+================================================================
+
+* The first argument to Keyboard.listen() is now optional, and
+  defaults to 'document'.
+* Keyboard.RuleSet() can take a node to listen to as the first
+  argument. This is optional and defaults to 'document'.
+* Forms package does not validate fields that are hidden using
+  'display: none'.
+
+
+Version 0.2.0
+June 13 2008
+================================================================
+
+* JS.Class upgraded to 1.6.1
+* Ojay compatible with current experimental branch of JS.Class
+* New packages: Forms, Keyboard, Overlay and Paginator
+
+* Additions to the core library:
+    * Ojay.delegateEvent()
+    * Ojay.Observable module, allows any class to support the on() method
+    * CSS queries use document.querySelectorAll() if available
+    * Ojay.getVisibleRegion() returns the Region for the part of the
+      page exposed by the viewport
+    * Number#times() for Ruby-style looping
+    * String#parseJSON(), a shortcut for YAHOO.lang.JSON.parse()
+    * HtmlBuilder#concat() allows existing nodes to be inserted into
+      the element between other tag calls
+    * HtmlBuilder can take HTMLElements as arguments so you can nest
+      elements without using functions
+    * New Region scaling and translation methods
+
+* Additions to HTTP package:
+    * HTTP.Response#insertInto() can accept any object with a
+      setContent() method, e.g. Overlay objects
+    * HTTP includes Observable and publishes events for HTTP traffic
+    * New catch-all onComplete callback for requests
+
+* Bug fixes:
+    * Opacity animations remove filters properly in IE
+    * DomCollection#setContent() works with SELECT and TABLE elements
+    * HTTP URL parser handles valueless parameters correctly in IE
+
+* Deprecations
+    * HTTP.Response#evalScriptTags() is deprecated and will be removed
+      by version 0.3. Use HTTP.Response#evalScripts() instead.
+
+
+Version 0.1.2
+First public release under BSD license
+February 22 2008
+================================================================
+
+* JS.Class 1.5.0
+* Core DOM, events, animation libraries
+* HTTP, History and Mouse packages  
+
