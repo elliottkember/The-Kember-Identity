@@ -377,7 +377,7 @@ __global__ void md5_search(uint *gwords, uint *succ, int realthreads)
 
 	RSA_KERNEL(word, a, b, c, d);
 
-	if(a == target[0])// && b == target[1] && c == target[2] && d == target[3])
+	if(a == target[0] && b == target[1] && c == target[2] && d == target[3])
 	{
 		succ[0] = linidx;
 		succ[3] = 1;

@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Finding the Kember identity</title>
+  <script src="/ojay-0.4.0/yui.js" type="text/javascript"></script>
+  <script src="/ojay-0.4.0/ojay/js-class-min.js" type="text/javascript"></script>
+  <script src="/ojay-0.4.0/ojay/core-min.js" type="text/javascript"></script>
+  <script src="/ojay-0.4.0/ojay/pkg/http-min.js" type="text/javascript"></script>
+  <script src="/jshash-2.1/md5.js" type="text/javascript"></script>
+</head>
+<body>
+    <h1>Finding the Kember identity</h1>
+    
+    <button id="stop">Stop!</button>
+    
+    <ul id="log"></ul>
+    
+    <script type="text/javascript" language="javascript" charset="utf-8">
+    function process() {
+        if (!running) return;
+        Ojay.HTTP.GET('/batch', {}, function(response) {
+            var hashes = response.responseText.trim().split(',');
+            hashes.forEach(function(hash) {
+                var md5 = hex_md5(hash);
+                var match = md5 === hash;
+                log.insert(Ojay.HTML.li(hash + ' --> ' + md5 + (match ? ' MATCH' : '')));
+                if (match) Ojay.HTTP.POST('/found/' + hash);
+            });
+            process();
+        });
+    };
+    
+    running = true;
+    var log = Ojay('#log');
+    process();
+    
+    Ojay('#stop').on('click', function(button, evnt) {
+        evnt.stopDefault();
+        running = false;
+    });
+    </script>
+</body>
+</html>
+

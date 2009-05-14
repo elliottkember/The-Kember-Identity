@@ -1,0 +1,11 @@
+This app uses Ruby and Sinatra to provide a simple web service that remembers which
+hashes have been tried, and farms the hashing out to JavaScript over the web. To
+run it, first create two files in the same directory as app.rb:
+
+    * found.txt -- leave this empty
+    * current.txt -- should contain a decimal number between 0 and 16^32-1
+
+The number in current.txt is the starting point.
+
+This app is currently being hosted at http://kember.jcoglan.com
+
