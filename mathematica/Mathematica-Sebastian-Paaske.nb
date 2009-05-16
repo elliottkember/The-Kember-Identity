@@ -1,0 +1,83 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 6.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[      2258,         74]
+NotebookOptionsPosition[      1969,         60]
+NotebookOutlinePosition[      2310,         75]
+CellTagsIndexPosition[      2267,         72]
+WindowFrame->Normal
+ContainsDynamic->False*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindMD5Identity", "[", "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"md5Max", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"16", "^", "32"}], "-", "1"}]}], ",", "\[IndentingNewLine]", 
+       
+       RowBox[{"output", "=", "\"\<\>\""}]}], "\[IndentingNewLine]", "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{"output", "\[NotEqual]", 
+         RowBox[{"Hash", "[", 
+          RowBox[{"output", ",", "\"\<MD5\>\""}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"output", "=", 
+          RowBox[{"IntegerString", "[", 
+           RowBox[{
+            RowBox[{"RandomInteger", "[", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "md5Max"}], "}"}], "]"}], ",", "16"}], 
+           "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", "output"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.4513126147720003`*^9, 3.451312808565*^9}, {
+  3.451312852217*^9, 3.451312854168*^9}, {3.451313140032*^9, 
+  3.451313141201*^9}}],
+
+Cell[BoxData[
+ RowBox[{"FindMD5Identity", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.451312813008*^9, 3.451312818262*^9}, 3.451312857071*^9}]
+},
+WindowSize->{607, 750},
+WindowMargins->{{3, Automatic}, {Automatic, -1}},
+FrontEndVersion->"6.0 for Microsoft Windows (32-bit) (April 28, 2007)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[568, 21, 1252, 33, 212, "Input"],
+Cell[1823, 56, 142, 2, 31, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
