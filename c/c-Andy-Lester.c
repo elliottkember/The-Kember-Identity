@@ -1,11 +1,23 @@
-/* Stolen shamelessly from c-Chaz-Schlarp.c */
+/*
+
+Stolen shamelessly from c-Chaz-Schlarp.c
+
+My big optimization is to start with a random string, find its md5,
+and then use that computed md5 as the next source string, with one
+hex digit changed.  My theory is that since each md5 is effectively
+random, and there's no correlation between adjacent md5s, that
+changing one digit is just as good as creating a new string of 16
+new digits.  This lets me do only two expensive rand() calls per
+try.
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#define PROGRESS_MOD (1024*64)
+#define PROGRESS_MOD (1024*1024)
 
 const unsigned int T[64] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -147,7 +159,7 @@ const char * md5(const char *input, int inputlength)
 
 int main( void )
 {
-    static const char digits[] = "0123456789ABCDEF";
+    static const char digits[] = "0123456789abcdef";
     long ntries = 0;
     char source[33];
     int i;
@@ -160,7 +172,8 @@ int main( void )
 
     while (1) {
         if ( ntries % PROGRESS_MOD == 0 ) {
-            printf( "# %ld tries, trying %s\n", ntries, source );
+            const time_t now = time(NULL);
+            printf( "# %ld, %12ld, %-24.24s, %s\n", now, ntries, ctime(&now), source );
         }
         ++ntries;
 
