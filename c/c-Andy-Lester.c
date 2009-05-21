@@ -181,6 +181,7 @@ int main( void )
 
             printf( "# %lu, %6lu, %12lu, %9.1f, %-24.24s, %s\n",
                     now, elapsed, ntries, rate, ctime(&now), source );
+            fflush(stdout);
         }
         ++ntries;
 
