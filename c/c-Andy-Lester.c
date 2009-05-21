@@ -31,7 +31,8 @@ typedef struct md5_state_s {
     unsigned char buf[64];
 } md5_state_t;
 
-static void md5_process(md5_state_t *pms, const unsigned char *data) {
+static void md5_process(md5_state_t *pms, const unsigned char *data)
+{
     unsigned int a = pms->abcd[0];
     unsigned int b = pms->abcd[1];
     unsigned int c = pms->abcd[2];
@@ -40,6 +41,7 @@ static void md5_process(md5_state_t *pms, const unsigned char *data) {
     unsigned int xbuf[16];
     const unsigned int *X;
     int pass = 0;
+
     if(!((data - (const unsigned char *)0) & 3)) {
         X = (const unsigned int *)data;
     }
@@ -63,7 +65,8 @@ static void md5_process(md5_state_t *pms, const unsigned char *data) {
 
 void md5_init(md5_state_t *pms)
 {
-    pms->count[0] = pms->count[1] = 0;
+    pms->count[0] = 0;
+    pms->count[1] = 0;
     pms->abcd[0] = 0x67452301;
     pms->abcd[1] = 0xefcdab89;
     pms->abcd[2] = 0x98badcfe;
