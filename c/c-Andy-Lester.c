@@ -17,6 +17,7 @@ try.
 #include <string.h>
 #include <time.h>
 
+#define NHEXDIGITS   32
 #define PROGRESS_MOD (1024*1024)
 
 const unsigned int T[64] = {
@@ -160,31 +161,37 @@ const char * md5(const char *input, int inputlength)
 int main( void )
 {
     static const char digits[] = "0123456789abcdef";
-    long ntries = 0;
+    unsigned long ntries = 0;
     char source[33];
     int i;
 
-    srand(time(NULL));
+    const time_t start = time(NULL);
+
+    srand(start);
     memset( source, 0, sizeof( source ) );
-    for ( i = 0; i < 32; i++ ) {
+    for ( i = 0; i < NHEXDIGITS; i++ ) {
         source[ i ] = digits[ rand() % 16 ];
     }
 
     while (1) {
         if ( ntries % PROGRESS_MOD == 0 ) {
-            const time_t now = time(NULL);
-            printf( "# %ld, %12ld, %-24.24s, %s\n", now, ntries, ctime(&now), source );
+            const time_t now     = time(NULL);
+            const time_t elapsed = now - start;
+            const float  rate    = elapsed ? ((float)ntries/(float)elapsed) : 0;
+
+            printf( "# %lu, %6lu, %12lu, %9.1f, %-24.24s, %s\n",
+                    now, elapsed, ntries, rate, ctime(&now), source );
         }
         ++ntries;
 
-        const char * const calculated_md5 = md5( source, 32 );
-        if ( memcmp( calculated_md5, source, 32 ) == 0 ) {
+        const char * const calculated_md5 = md5( source, NHEXDIGITS );
+        if ( memcmp( calculated_md5, source, NHEXDIGITS ) == 0 ) {
             printf("We found it: %s matches %s\n", source, calculated_md5 );
             exit(0);
         }
-        /* Rather than come up with all new random digits, we just randomize one digit. */
-        memcpy( source, calculated_md5, 32 );
-        source[ rand() % 32 ] = digits[ rand() % 16 ];
+        /* Rather than come up with all random digits, we just randomize one digit */
+        memcpy( source, calculated_md5, NHEXDIGITS );
+        source[ rand() % NHEXDIGITS ] = digits[ rand() % 16 ];
     }
     return 0;
 }
