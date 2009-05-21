@@ -129,7 +129,7 @@ void md5_finish(md5_state_t *pms, unsigned char digest[16])
 const char * md5(const char *input, int inputlength)
 {
     md5_state_t state;
-    unsigned char digest[16];
+    static unsigned char digest[16];
     static char hex_output[16*2 + 1];
     int di;
 
