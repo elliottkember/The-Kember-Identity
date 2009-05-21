@@ -145,7 +145,7 @@ const char * md5(const char *input, int inputlength)
 int main( void )
 {
     static const char digits[] = "0123456789ABCDEF";
-    int ntries = 0;
+    long ntries = 0;
     char source[33];
     int i;
 
@@ -162,7 +162,7 @@ int main( void )
         ++ntries;
 
         const char * const calculated_md5 = md5( source, 32 );
-        if ( strcmp( calculated_md5, source ) == 0 ) {
+        if ( memcmp( calculated_md5, source, 32 ) == 0 ) {
             printf("We found it: %s matches %s\n", source, calculated_md5 );
             exit(0);
         }
