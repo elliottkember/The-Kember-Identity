@@ -73,9 +73,9 @@ void md5_init(md5_state_t *pms)
 void md5_append(md5_state_t *pms, const unsigned char *data, int nbytes)
 {
     const unsigned char *p = data;
-    int left = nbytes;
-    const int offset = (pms->count[0] >> 3) & 63;
-    unsigned int nbits = (unsigned int)(nbytes << 3);
+    const int offset       = (pms->count[0] >> 3) & 63;
+    unsigned int nbits     = (unsigned int)(nbytes << 3);
+    int left               = nbytes;
 
     if (nbytes <= 0) {
         return;
@@ -155,9 +155,9 @@ int main( void )
         source[ i ] = digits[ rand() % 16 ];
     }
 
-    while ( ntries < 1000000) {
+    while (1) {
         if ( ntries % PROGRESS_MOD == 0 ) {
-            printf( "# %ld tries\n", ntries );
+            printf( "# %ld tries, trying %s\n", ntries, source );
         }
         ++ntries;
 
