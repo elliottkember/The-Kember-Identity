@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 
-#define PROGRESS_MOD 1024
+#define PROGRESS_MOD (1024*64)
 
 const unsigned int T[64] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -136,43 +136,39 @@ const char * md5(const char *input, int inputlength)
     md5_init(&state);
     md5_append(&state, (const unsigned char *)input, inputlength);
     md5_finish(&state, digest);
-    for (di = 0; di < 16; ++di)
-    {
+    for (di = 0; di < 16; ++di) {
         sprintf(hex_output + di * 2, "%02x", digest[di]);
     }
     return hex_output;
 }
 
-int main( int argc, const char *argv[] )
+int main( void )
 {
-    char kembertest[33];
-    int i = 0;
+    static const char digits[] = "0123456789ABCDEF";
     int ntries = 0;
+    char source[33];
+    int i;
 
-    kembertest[32] = '\0';
     srand(time(NULL));
+    memset( source, 0, sizeof( source ) );
+    for ( i = 0; i < 32; i++ ) {
+        source[ i ] = digits[ rand() % 16 ];
+    }
 
-    printf("Mission start: The Hunt for the Kember Identity\n");
-
-    while(1) {
-        char *kembertestmd5;
-        for (i = 0; i < 32; i++) {
-            int random = rand() % 16;
-            kembertest[i] = (random <= 9 ? random + '0' : random + 'a' - 10);
+    while ( ntries < 1000000) {
+        if ( ntries % PROGRESS_MOD == 0 ) {
+            printf( "# %ld tries\n", ntries );
         }
-        kembertestmd5 = (char *)md5(kembertest, strlen(kembertest));
-        if (strcmp(kembertestmd5, kembertest) == 0) {
-            printf("We found it: %s\n", kembertest);
+        ++ntries;
+
+        const char * const calculated_md5 = md5( source, 32 );
+        if ( strcmp( calculated_md5, source ) == 0 ) {
+            printf("We found it: %s matches %s\n", source, calculated_md5 );
             exit(0);
         }
-        else {
-            ++ntries;
-            if ( ntries % PROGRESS_MOD == 0 ) {
-                printf( "# %ld tries\n", ntries );
-            }
-            puts( kembertest );
-        }
+        /* Rather than come up with all random digits, we just randomize one digit */
+        memcpy( source, calculated_md5, 32 );
+        source[ rand() % 32 ] = digits[ rand() % 16 ];
     }
     return 0;
 }
-
