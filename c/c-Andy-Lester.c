@@ -182,7 +182,7 @@ int main( void )
             printf("We found it: %s matches %s\n", source, calculated_md5 );
             exit(0);
         }
-        /* Rather than come up with all random digits, we just randomize one digit */
+        /* Rather than come up with all new random digits, we just randomize one digit. */
         memcpy( source, calculated_md5, 32 );
         source[ rand() % 32 ] = digits[ rand() % 16 ];
     }
