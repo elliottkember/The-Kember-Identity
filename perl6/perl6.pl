@@ -3,7 +3,8 @@
 # Kudos to tadzik++ and masak++ on #perl6 for suggestions!
 
 use v6;
-use Digest::MD5; # part of Rakudo 2010-10 release; also available as "neutro perl6-digest-md5"
+use Digest::MD5; # Bundled as part of Rakudo Star 2010-10 release;
+                 # also available as "neutro perl6-digest-md5"
 
 my Int $count = 0;
 my Str @alphabet = (0..9, 'a'..'f');
